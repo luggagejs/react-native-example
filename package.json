@@ -7,7 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "luggage": "github:luggagejs/luggage#2.1.1",
     "react": "16.0.0-alpha.6",
+    "react-luggage-redux": "github:luggagejs/react-luggage-redux",
     "react-native": "0.44.0",
     "react-redux": "^5.0.5",
     "redux": "^3.6.0"

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import todo from '../reducers/todo'
+import { luggageReducer } from 'react-luggage-redux'
 
-const rootReducer = combineReducers({
-  todo
+const todoApp = combineReducers({
+  luggage: luggageReducer
 })
 
-export default rootReducer
+export default todoApp
