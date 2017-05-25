@@ -25,6 +25,8 @@ export class App extends Component {
     todos: []
   }
 
+  state = { text: '' }
+
   componentDidMount() {
     this.props.fetchCollection('todos')
   }
@@ -36,6 +38,7 @@ export class App extends Component {
 
   render() {
     const { todos } = this.props
+    console.log(this.props)
 
     return (
       <View>
