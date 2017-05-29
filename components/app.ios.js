@@ -61,8 +61,8 @@ export class App extends Component {
   }
 
   addTodo() {
-    this.props.addRecord('todos', { text: this.todoInput.value })
-    this.todoInput.value = ''
+    this.props.addRecord('todos', { text: this.state.text })
+    this.state.text = ''
   }
 
   render() {
