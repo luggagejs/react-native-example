@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, TextInput, View, StyleSheet, TouchableHighlight, Linking } from 'react-native'
+import { Text, TextInput, View, StyleSheet, TouchableHighlight, Linking, WebView } from 'react-native'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     marginTop: 20,
-    padding: 20,
+    padding: 10,
     width: null
   },
   input: {
@@ -43,7 +43,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export const APP_KEY = 'tqx0ze13xl6vawf'
+const APP_KEY = 'tqx0ze13xl6vawf'
+const DROPBOX_URL = [
+      'https://www.dropbox.com/1/oauth2/authorize',
+      '?response_type=token',
+      '&client_id=' + APP_KEY,
+      '&redirect_uri=oauth2todo://foo'
+    ].join('')
 
 export class App extends Component {
   static propTypes = {
@@ -59,48 +65,6 @@ export class App extends Component {
   state = { text: '' }
 
   componentDidMount() {
-    var url = Linking.getInitialURL().then((url) => {
-      if (url) {
-        console.log('Initial url is: ' + url);
-      }
-    }).catch(err => console.error('An error occurred', err));
-
-
-    this.dropboxOauth(APP_KEY)
-    Linking.addEventListener('url', this._handleOpenURL);
-
-
-    //this.props.fetchCollection('todos')
-  }
-
-  componentWillUnmount() {
-    Linking.removeEventListener('url', this._handleOpenURL);
-  }
-
-  dropboxOauth(app_key) {
-    Linking.openURL([
-      'https://www.dropbox.com/1/oauth2/authorize',
-      '?response_type=token',
-      '&client_id=' + app_key,
-      '&redirect_uri=oauth2todo://foo'
-    ].join(''))
-    console.log('event.url');
-    Linking.addEventListener('url', this._handleOpenURL);
-  }
-
-  _handleOpenURL(event) {
-    console.log(event.url);
-    Linking.removeEventListener('url', this._handleOpenURL)
-  }
-
-  _openLink(url) {
-    Linking.canOpenURL(url).then(supported => {
-      if (!supported) {
-        console.log('Can\'t handle url: ' + url);
-      } else {
-        return Linking.openURL(url);
-      }
-    }).catch(err => console.error('An error occurred', err));
   }
 
   addTodo() {
@@ -108,24 +72,37 @@ export class App extends Component {
     this.state.text = ''
   }
 
+  getTokenFromUrl(url) {
+    const token = url.replace(/^(.*access_token=)(.*)/, '$2')
+    if (token !== url) {
+      return token.replace(/^(.*?)(&.*)/, '$1')
+    } else
+      return ''
+  }
+
+  onShouldStartLoadWithRequest = (navigator) => {
+    const token = this.getTokenFromUrl(navigator.url)
+    if (token) {
+      this.webview.stopLoading()
+      return false
+    } else {
+      return true
+    }
+  }
+
   render() {
     const { todos } = this.props
     return (
-      <View style={styles.body}>
-        <TextInput style={styles.input}
-                   placeholder='New todo'
-                   onChangeText={(text) => this.setState({text})}
-                   value={this.state.text}
-                   onSubmitEditing={this.addTodo.bind(this)} />
-          <TouchableHighlight onPress={this._openLink}>
-            <Text style={styles.item}>Login Dropbox</Text>
-          </TouchableHighlight>
-        { todos.map((todo, i) => (
-          <View key={i}><Text style={styles.item}>{todo.text}</Text></View>
-        )) }
-      </View>
+        <WebView
+                ref={(webview) => { this.webview = webview }} 
+                source={{uri: DROPBOX_URL}}
+                onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} // for iOS
+                onNavigationStateChange={this.onShouldStartLoadWithRequest} // for Andriod
+        />
     )
   }
+
+
 }
 
 export default connect(
