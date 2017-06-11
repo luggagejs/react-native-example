@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { luggageMiddleware } from 'react-luggage-redux'
-import { Text, AppRegistry } from 'react-native'
+import { AppRegistry } from 'react-native'
 import reducer from './reducers/index'
 import createSessionManager from './lib/createSessionManager'
 import DropboxAutent from './components/DropboxAutent'
+import TodoList from './components/TodoList'
 
 const API_KEY = 'tqx0ze13xl6vawf'
 
@@ -31,7 +32,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={this.store}>
-        <Text>Text</Text>
+        <TodoList />
       </Provider>
     )
   }
