@@ -1,71 +1,42 @@
 import React, { Component } from 'react'
-import { WebView, AppRegistry } from 'react-native'
-import TokenStorage from './lib/TokenStorage'
-import ReduxApp from './components/reduxapp'
+import PropTypes from 'prop-types'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import { luggageMiddleware } from 'react-luggage-redux'
+import { Text, AppRegistry } from 'react-native'
+import reducer from './reducers/index'
+import createSessionManager from './lib/createSessionManager'
+import DropboxAutent from './components/DropboxAutent'
 
-const APP_KEY = 'tqx0ze13xl6vawf'
-const DROPBOX_URL = [
-  'https://www.dropbox.com/1/oauth2/authorize',
-  '?response_type=token',
-  '&client_id=' + APP_KEY,
-  '&redirect_uri=oauth2todo://foo'
-].join('')
+const API_KEY = 'tqx0ze13xl6vawf'
 
-export class App extends Component {
-  state = {
-    token: '',
-    isAutorized: false
+class App extends Component {
+  static propTypes = {
+    token: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
-    this.tokenStorage = new TokenStorage()
-  }
-
-  componentDidMount() {
-    this.tokenStorage.getToken().then(token => {
-      this.setState({
-        token,
-        isAutorized: true
-      })
-    })
-  }
-
-  onShouldStartLoadWithRequest = (navigator) => {
-    const matchToken = navigator.url.match(/access_token=([\w\-\_]+)/)
-
-    if (matchToken) {
-      const [, token] = matchToken
-      this.tokenStorage.setToken(token)
-      this.setState({
-        token,
-        isAutorized: true
-      })
-      if (this.webview) {
-        this.webview.stopLoading()
-      }
-      return false
-    }
-    return true
+    const { token } = this.props
+    const SessionManager = createSessionManager(token)
+    this.store = createStore(
+      reducer,
+      applyMiddleware(luggageMiddleware({
+        apiKey: API_KEY,
+        SessionManager
+      }))
+    )
   }
 
   render() {
-    const { isAutorized, token } = this.state
-
     return (
-      isAutorized ? <ReduxApp token={token} /> :
-        <WebView
-                ref={(webview) => {
-                  this.webview = webview
-                }}
-                source={{uri: DROPBOX_URL}}
-                // for iOS
-                onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
-                // for Andriod
-                onNavigationStateChange={this.onShouldStartLoadWithRequest}
-        />
+      <Provider store={this.store}>
+        <Text>Text</Text>
+      </Provider>
     )
   }
 }
 
-AppRegistry.registerComponent('ToDoReactNative', () => App)
+const WithDropboxAutent = DropboxAutent(API_KEY)(App)
+
+AppRegistry.registerComponent('ToDoReactNative', () => WithDropboxAutent)
