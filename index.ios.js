@@ -6,7 +6,7 @@ import { luggageMiddleware } from 'react-luggage-redux'
 import { AppRegistry } from 'react-native'
 import reducer from './reducers/index'
 import createSessionManager from './lib/createSessionManager'
-import DropboxAutent from './components/DropboxAutent'
+import DropboxAutent from 'dropbox-autent'
 import TodoList from './components/TodoList'
 
 const API_KEY = 'tqx0ze13xl6vawf'
@@ -38,6 +38,6 @@ class App extends Component {
   }
 }
 
-const WithDropboxAutent = DropboxAutent(API_KEY)(App)
+const WithDropboxAutent = DropboxAutent({apiKey: API_KEY, redirectUrl: 'oauth2todo://foo'})(App)
 
 AppRegistry.registerComponent('ToDoReactNative', () => WithDropboxAutent)

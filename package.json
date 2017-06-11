@@ -15,7 +15,8 @@
     "react-luggage-redux": "github:luggagejs/react-luggage-redux",
     "react-native": "0.44.0",
     "react-redux": "^5.0.5",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "dropbox-autent": "github:luggagejs/dropbox-autent#0.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
