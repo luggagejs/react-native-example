@@ -10,6 +10,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "luggage": "github:luggagejs/luggage#2.1.2",
+    "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.6",
     "react-luggage-redux": "github:luggagejs/react-luggage-redux",
     "react-native": "0.44.0",
@@ -17,8 +18,11 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "babel-jest": "20.0.3",
     "babel-preset-react-native": "^1.9.2",
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^7.0.1",
     "jest": "20.0.3",
     "react-test-renderer": "16.0.0-alpha.6"
   },
