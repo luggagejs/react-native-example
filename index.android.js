@@ -1,3 +1,5 @@
+import 'babel-polyfill'
+
 import React, { AppRegistry } from 'react-native';
 import WithDropboxAutent from './components/index';
 
