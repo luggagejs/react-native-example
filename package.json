@@ -9,7 +9,7 @@
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "dropbox-autent": "github:luggagejs/dropbox-autent#0.0.2",
+    "dropbox-autent": "github:luggagejs/dropbox-autent#0.0.3",
     "luggage": "github:luggagejs/luggage#2.1.2",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.6",
