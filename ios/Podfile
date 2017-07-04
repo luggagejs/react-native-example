@@ -1,0 +1,32 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'ToDoReactNative' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for ToDoReactNative
+  pod 'RNMobileCenterShared', '~> 0.7.0'
+  pod 'MobileCenter', '~> 0.10.1'
+
+  
+
+  target 'ToDoReactNativeTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'ToDoReactNative-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for ToDoReactNative-tvOS
+
+  target 'ToDoReactNative-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
